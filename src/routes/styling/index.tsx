@@ -49,6 +49,22 @@ List of common props that affect CSS
 - Color              --color-text
 - FontSize           --font-size-text
 - FontWeight         unset
+
+
+digestCommonProps = (props, componentSpecificOverrides) => {
+    // defaults with the above default values
+    const results;
+
+    for each key in componentSpecificOverrides {
+        if props has key {
+            add props[key] to results
+        } else {
+            add overrides[key] to results
+        }
+    }
+
+    return results
+}
 */
 
 const StyleGuide = () => {
