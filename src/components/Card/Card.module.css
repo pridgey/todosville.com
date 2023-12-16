@@ -1,7 +1,9 @@
 .card {
-  background-color: var(--color-background);
+  background-color: var(--color-foreground);
   border-radius: var(--border-radius);
-  color: var(--color-text);
+  box-shadow: var(--box-shadow-small);
+  color: var(--color-background);
   font-family: var(--font-family);
   font-size: var(--font-size-text);
+  padding: var(--spacing-medium);
 }

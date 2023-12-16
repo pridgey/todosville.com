@@ -3,7 +3,8 @@
   src: url("/fonts/Bitter-VariableFont_wght.ttf") format("truetype");
 }
 
-:root {
+:root,
+.light-override {
   /* Color Pallete */
   --color-primary: #54819b;
   --color-secondary: #9ebbe6;
@@ -20,6 +21,10 @@
   --color-fullforeground: var(--color-fullblack);
   --color-background: var(--color-white);
   --color-foreground: var(--color-black);
+  --color-darken: 80%;
+  --color-darken-2: 70%;
+  --color-lighten: 120%;
+  --color-lighten-2: 130%;
   /* Border-Radii (handled by rem) */
   --border-radius: 1rem;
   /* Box-Shadow */
@@ -27,7 +32,9 @@
   --box-shadow-small: 0px 3px 3px 0px var(--shadow-color);
   --box-shadow-medium: 0px 3px 8px 0px var(--shadow-color);
   /* Spacing (handled by rem) */
-  --spacing: 1rem;
+  --spacing-small: 1rem;
+  --spacing-medium: 2rem;
+  --spacing-large: 4rem;
   /* Font Family */
   --font-family: "Bitter", Gordita, Roboto, Oxygen, Ubuntu, Cantarell,
     "Open Sans", "Helvetica Neue", sans-serif;
@@ -52,6 +59,10 @@
     --color-fullbackground: var(--color-fullblack);
     --color-fullforeground: var(--color-fullwhite);
     --color-text: var(--color-white);
+    --color-darken: 120%;
+    --color-darken-2: 130%;
+    --color-lighten: 80%;
+    --color-lighten-2: 70%;
     --shadow-color: rgba(0, 0, 0, 0.75);
   }
 }
@@ -59,6 +70,7 @@
 /* Some CSS Reset */
 html,
 body {
+  background-color: var(--color-background);
   margin: 0px;
   padding: 0px;
 }

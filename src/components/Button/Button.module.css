@@ -1,0 +1,66 @@
+.button {
+  align-items: center;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  fill: var(--color-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-bold);
+  gap: 0px var(--spacing-small);
+  justify-content: center;
+  stroke: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  width: unset;
+}
+
+.button:hover {
+  filter: brightness(var(--color-darken));
+}
+
+.button:active {
+  filter: brightness(var(--color-darken-2));
+}
+
+.filled {
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: var(--color-white);
+}
+
+.outlined {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.textoutline,
+.textunderline,
+.text {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-background);
+  color: var(--color-primary);
+}
+
+.textoutline:hover {
+  border: 1px solid var(--color-primary);
+}
+
+.textunderline:hover {
+  text-decoration: underline;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.spin {
+  animation: 1s ease-in 0s infinite reverse both running spin;
+  animation-direction: normal;
+}
