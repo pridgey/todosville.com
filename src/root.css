@@ -53,7 +53,8 @@
 
 /* Dark Theme */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root,
+  .dark-override {
     --color-background: var(--color-black);
     --color-foreground: var(--color-white);
     --color-fullbackground: var(--color-fullblack);
@@ -92,4 +93,19 @@ h4,
 h5,
 h6 {
   margin: 0px;
+}
+
+/* Default styles for components */
+.component {
+  --component-grid-area: unset;
+  --component-height: unset;
+  --component-width: unset;
+  --component-padding: unset;
+  --component-margin: unset;
+  --component-background-color: var(--color-background);
+  --component-color: var(--color-text);
+  --component-font-size: var(--font-size-text);
+  --component-font-weight: unset;
+  --component-border: unset;
+  --component-border-radius: unset;
 }

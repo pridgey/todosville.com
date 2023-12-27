@@ -1,5 +1,6 @@
 import { Card } from "~/components/Card";
 import { Button } from "~/components/Button";
+import { Title } from "solid-start";
 
 const Content = () => {
   return (
@@ -11,6 +12,7 @@ const Content = () => {
         gap: "var(--spacing-medium)",
       }}
     >
+      <Card BackgroundColor="Error">Card Component</Card>
       <Card>Card Component</Card>
       <Button Type="button">Filled (Default) Button</Button>
       <Button Type="button" Variant="outlined">
@@ -37,66 +39,39 @@ const Content = () => {
   );
 };
 
-/*
-List of common props that affect CSS
-|  Props          |  Default (Global)     |
-- GridArea           unset
-- Height             unset
-- Width              unset
-- Padding            unset
-- Margin             unset
-- BackgroundColor    --color-background
-- Color              --color-text
-- FontSize           --font-size-text
-- FontWeight         unset
-
-
-digestCommonProps = (props, componentSpecificOverrides) => {
-    // defaults with the above default values
-    const results;
-
-    for each key in componentSpecificOverrides {
-        if props has key {
-            add props[key] to results
-        } else {
-            add overrides[key] to results
-        }
-    }
-
-    return results
-}
-*/
-
 const StyleGuide = () => {
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "0px",
-        left: "0px",
-        right: "0px",
-        bottom: "0px",
-        display: "flex",
-        "flex-direction": "row",
-      }}
-    >
-      <div
-        class="light-override"
-        style={{
-          background: "var(--color-background)",
-          width: "100%",
-        }}
-      >
-        <Content />
-      </div>
+    <>
+      <Title>Todosville Styles</Title>
       <div
         style={{
-          width: "100%",
+          position: "absolute",
+          top: "0px",
+          left: "0px",
+          right: "0px",
+          bottom: "0px",
+          display: "flex",
+          "flex-direction": "row",
         }}
       >
-        <Content />
+        <div
+          class="light-override"
+          style={{
+            background: "var(--color-background)",
+            width: "100%",
+          }}
+        >
+          <Content />
+        </div>
+        <div
+          style={{
+            width: "100%",
+          }}
+        >
+          <Content />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
