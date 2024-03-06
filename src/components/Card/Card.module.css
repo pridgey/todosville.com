@@ -1,9 +1,0 @@
-.card {
-  background-color: var(--component-background-color, var(--color-foreground));
-  border-radius: var(--component-border-radius, var(--border-radius));
-  box-shadow: var(--box-shadow-small);
-  color: var(--component-color, var(--color-background));
-  font-family: var(--font-family);
-  font-size: var(--component-font-size, var(--font-size-text));
-  padding: var(--component-padding, var(--spacing-medium));
-}
