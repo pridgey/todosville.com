@@ -1,5 +1,8 @@
-import { useSession } from "vinxi/http";
-import { db } from "./db";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.SUPABASE_URL ?? "no_url_found";
+const supabaseKey = process.env.SUPABASE_KEY ?? "no_key_found";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export function validateUsername(username: unknown) {
   if (typeof username !== "string" || username.length < 3) {
@@ -14,26 +17,39 @@ export function validatePassword(password: unknown) {
 }
 
 export async function login(username: string, password: string) {
-  const user = await db.user.findUnique({ where: { username } });
-  if (!user || password !== user.password) throw new Error("Invalid login");
-  return user;
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: username,
+    password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data.user;
 }
 
 export async function logout() {
-  const session = await getSession();
-  await session.update(d => (d.userId = undefined));
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function register(username: string, password: string) {
-  const existingUser = await db.user.findUnique({ where: { username } });
-  if (existingUser) throw new Error("User already exists");
-  return db.user.create({
-    data: { username: username, password }
+  const { data, error } = await supabase.auth.signUp({
+    email: username,
+    password,
   });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data.user;
 }
 
-export function getSession() {
-  return useSession({
-    password: process.env.SESSION_SECRET ?? "areallylongsecretthatyoushouldreplace"
-  });
+export async function getSession() {
+  return await supabase.auth.getSession();
 }
