@@ -52,7 +52,7 @@ export default function Login(props: RouteSectionProps) {
               <Button
                 Disabled={loggingIn.pending}
                 OnClick={() => undefined}
-                Pending={true}
+                Pending={loggingIn.pending}
                 Type="submit"
               >
                 Login
