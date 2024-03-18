@@ -1,0 +1,28 @@
+.input_root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.input_label {
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+.input_control {
+  background-color: var(--color-fullbackground);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-text);
+  padding: var(--spacing-small);
+}
+
+.input_helper {
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-small);
+}

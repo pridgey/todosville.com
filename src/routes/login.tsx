@@ -2,6 +2,8 @@ import { useSubmission, type RouteSectionProps } from "@solidjs/router";
 import { Show } from "solid-js/web";
 import { loginOrRegister } from "~/lib";
 import styles from "~/styles/authStyles.module.css";
+import { Input } from "~/components/input";
+import { Text } from "~/components/text";
 
 export default function Login(props: RouteSectionProps) {
   const loggingIn = useSubmission(loginOrRegister);
@@ -9,7 +11,23 @@ export default function Login(props: RouteSectionProps) {
   return (
     <main class={styles.layout}>
       <section class={styles.auth_container}>
-        <h1>Login</h1>
+        <Text As="h1" FontSize="extra-large" FontWeight="bold">
+          Todosville
+        </Text>
+        <Text As="h2" FontSize="header" FontWeight="semibold">
+          Login
+        </Text>
+        <Input
+          Label="Email"
+          Placeholder="superCool@realfly.wiz"
+          OnChange={() => undefined}
+        />
+        <Input
+          HelperText="At least 6 characters"
+          Label="Password"
+          Placeholder="super secure like me 🥲"
+          OnChange={() => undefined}
+        />
       </section>
 
       {/* <form action={loginOrRegister} method="post">

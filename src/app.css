@@ -15,7 +15,7 @@
   --color-fullwhite: #ffffff;
   --color-fullblack: #111111;
   --color-white: #f8f5f3;
-  --color-black: #231724;
+  --color-black: #0a080a;
   --color-text: var(--color-black);
   --color-fullbackground: var(--color-fullwhite);
   --color-fullforeground: var(--color-fullblack);
@@ -41,9 +41,11 @@
   /* Font Sizes (handled by rem) */
   font-size: 8px;
   --font-size-mini: 1rem; /* 8px */
+  --font-size-small: 1.5rem; /* 12px */
   --font-size-text: 2rem; /* 16px */
   --font-size-header: 3rem; /* 24px */
   --font-size-large: 4rem; /* 32px */
+  --font-size-extra-large: 5rem; /* 40px */
   /* Font Weights */
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -59,6 +61,7 @@
     --color-foreground: var(--color-white);
     --color-fullbackground: var(--color-fullblack);
     --color-fullforeground: var(--color-fullwhite);
+    --color-gray: #625a59;
     --color-text: var(--color-white);
     --color-darken: 120%;
     --color-darken-2: 130%;
