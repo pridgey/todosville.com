@@ -20,36 +20,54 @@ export default function Login(props: RouteSectionProps) {
           <Text As="h2" FontSize="header" FontWeight="semibold">
             Login
           </Text>
-          <Flex Direction="column" Gap="var(--spacing-small)" Width="100%">
-            <Input
-              Label="Email"
-              Placeholder="superCool@realfly.wiz"
-              OnChange={() => undefined}
-            />
-            <Input
-              HelperText="At least 6 characters"
-              Label="Password"
-              Placeholder="super secure like me 🥲"
-              OnChange={() => undefined}
-              Type="password"
-            />
-          </Flex>
-          <Flex
-            Direction="row"
-            Gap="var(--spacing-medium)"
-            JustifyContent="flex-end"
-            Width="100%"
-          >
-            <Button OnClick={() => undefined} Variant="text">
-              Forgot Password
-            </Button>
-            <Button OnClick={() => undefined}>Login</Button>
-          </Flex>
-          <Flex Direction="row" JustifyContent="flex-end">
-            <Button OnClick={() => undefined} Variant="text">
-              Create an account
-            </Button>
-          </Flex>
+          <form action={loginOrRegister} method="post">
+            <Flex Direction="column" Gap="var(--spacing-small)" Width="100%">
+              <Input
+                Label="Email"
+                Placeholder="superCool@realfly.wiz"
+                OnChange={() => undefined}
+                Error={loggingIn.error}
+              />
+              <Input
+                HelperText="At least 6 characters"
+                Label="Password"
+                Placeholder="super secure like me 🥲"
+                OnChange={() => undefined}
+                Type="password"
+              />
+            </Flex>
+            <Flex
+              Direction="row"
+              Gap="var(--spacing-medium)"
+              JustifyContent="flex-end"
+              Width="100%"
+            >
+              <Button
+                Disabled={loggingIn.pending}
+                OnClick={() => undefined}
+                Variant="text"
+              >
+                Forgot Password
+              </Button>
+              <Button
+                Disabled={loggingIn.pending}
+                OnClick={() => undefined}
+                Pending={true}
+                Type="submit"
+              >
+                Login
+              </Button>
+            </Flex>
+            <Flex Direction="row" JustifyContent="flex-end">
+              <Button
+                Disabled={loggingIn.pending}
+                OnClick={() => undefined}
+                Variant="text"
+              >
+                Create an account
+              </Button>
+            </Flex>
+          </form>
         </Flex>
       </section>
 

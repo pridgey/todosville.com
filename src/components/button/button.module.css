@@ -29,3 +29,27 @@
   background-color: transparent;
   color: var(--button-color);
 }
+
+.button_content {
+  display: flex;
+  flex-direction: row;
+  gap: 0px 1rem;
+  justify-content: center;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.spin {
+  aspect-ratio: 1;
+  animation: 1s ease-in 0s infinite reverse both running spin;
+  animation-direction: normal;
+  height: 16px;
+  width: 16px;
+}
