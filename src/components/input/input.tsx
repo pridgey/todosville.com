@@ -9,30 +9,29 @@ export type InputProps = {
   Name?: string;
   OnChange: (newValue: string) => void;
   Placeholder?: string;
+  Type?: "text" | "password";
 };
 
-export const Input = ({
-  DefaultValue,
-  Error,
-  HelperText,
-  Label,
-  Name,
-  OnChange,
-  Placeholder,
-}: InputProps) => {
+export const Input = (props: InputProps) => {
   return (
     <TextField.Root
       class={styles.input_root}
-      defaultValue={DefaultValue}
-      name={Name}
-      onChange={OnChange}
+      defaultValue={props.DefaultValue}
+      name={props.Name}
+      onChange={props.OnChange}
     >
-      <TextField.Label class={styles.input_label}>{Label}</TextField.Label>
-      <TextField.Input class={styles.input_control} placeholder={Placeholder} />
+      <TextField.Label class={styles.input_label}>
+        {props.Label}
+      </TextField.Label>
+      <TextField.Input
+        class={styles.input_control}
+        placeholder={props.Placeholder}
+        type={props.Type}
+      />
       <TextField.Description class={styles.input_helper}>
-        {HelperText}
+        {props.HelperText}
       </TextField.Description>
-      <TextField.ErrorMessage>{Error}</TextField.ErrorMessage>
+      <TextField.ErrorMessage>{props.Error}</TextField.ErrorMessage>
     </TextField.Root>
   );
 };

@@ -2,6 +2,8 @@ import { useSubmission, type RouteSectionProps } from "@solidjs/router";
 import { Show } from "solid-js/web";
 import { loginOrRegister } from "~/lib";
 import styles from "~/styles/authStyles.module.css";
+import { Button } from "~/components/button";
+import { Flex } from "~/components/flex";
 import { Input } from "~/components/input";
 import { Text } from "~/components/text";
 
@@ -11,23 +13,44 @@ export default function Login(props: RouteSectionProps) {
   return (
     <main class={styles.layout}>
       <section class={styles.auth_container}>
-        <Text As="h1" FontSize="extra-large" FontWeight="bold">
-          Todosville
-        </Text>
-        <Text As="h2" FontSize="header" FontWeight="semibold">
-          Login
-        </Text>
-        <Input
-          Label="Email"
-          Placeholder="superCool@realfly.wiz"
-          OnChange={() => undefined}
-        />
-        <Input
-          HelperText="At least 6 characters"
-          Label="Password"
-          Placeholder="super secure like me 🥲"
-          OnChange={() => undefined}
-        />
+        <Flex Direction="column" Gap="var(--spacing-large)" Width="50%">
+          <Text As="h1" FontSize="extra-large" FontWeight="bold">
+            Todosville
+          </Text>
+          <Text As="h2" FontSize="header" FontWeight="semibold">
+            Login
+          </Text>
+          <Flex Direction="column" Gap="var(--spacing-small)" Width="100%">
+            <Input
+              Label="Email"
+              Placeholder="superCool@realfly.wiz"
+              OnChange={() => undefined}
+            />
+            <Input
+              HelperText="At least 6 characters"
+              Label="Password"
+              Placeholder="super secure like me 🥲"
+              OnChange={() => undefined}
+              Type="password"
+            />
+          </Flex>
+          <Flex
+            Direction="row"
+            Gap="var(--spacing-medium)"
+            JustifyContent="flex-end"
+            Width="100%"
+          >
+            <Button OnClick={() => undefined} Variant="text">
+              Forgot Password
+            </Button>
+            <Button OnClick={() => undefined}>Login</Button>
+          </Flex>
+          <Flex Direction="row" JustifyContent="flex-end">
+            <Button OnClick={() => undefined} Variant="text">
+              Create an account
+            </Button>
+          </Flex>
+        </Flex>
       </section>
 
       {/* <form action={loginOrRegister} method="post">
