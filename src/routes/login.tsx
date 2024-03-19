@@ -6,9 +6,23 @@ import { Button } from "~/components/button";
 import { Flex } from "~/components/flex";
 import { Input } from "~/components/input";
 import { Text } from "~/components/text";
+import { createEffect, createSignal } from "solid-js";
 
 export default function Login(props: RouteSectionProps) {
   const loggingIn = useSubmission(loginOrRegister);
+
+  const [emailError, setEmailError] = createSignal("");
+  const [passwordError, setPasswordError] = createSignal("");
+
+  createEffect(() => {
+    const result = loggingIn.result;
+
+    if (!(result instanceof Error)) {
+      console.log(result);
+      setEmailError(result?.error.email ?? "");
+      setPasswordError(result?.error.password ?? "");
+    }
+  });
 
   return (
     <main class={styles.layout}>
@@ -22,17 +36,21 @@ export default function Login(props: RouteSectionProps) {
           </Text>
           <form action={loginOrRegister} method="post">
             <Flex Direction="column" Gap="var(--spacing-small)" Width="100%">
+              <input type="hidden" name="loginType" value="login" />
               <Input
+                Error={emailError()}
                 Label="Email"
-                Placeholder="superCool@realfly.wiz"
+                Name="email"
                 OnChange={() => undefined}
-                Error={loggingIn.error}
+                Placeholder="superCool@realfly.wiz"
               />
               <Input
+                Error={passwordError()}
                 HelperText="At least 6 characters"
                 Label="Password"
-                Placeholder="super secure like me 🥲"
+                Name="password"
                 OnChange={() => undefined}
+                Placeholder="super secure like me 🥲"
                 Type="password"
               />
             </Flex>

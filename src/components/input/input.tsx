@@ -1,5 +1,6 @@
 import { TextField } from "@kobalte/core";
 import styles from "./input.module.css";
+import { createEffect } from "solid-js";
 
 export type InputProps = {
   DefaultValue?: string;
@@ -13,6 +14,9 @@ export type InputProps = {
 };
 
 export const Input = (props: InputProps) => {
+  createEffect(() => {
+    console.log("Input", { props, error: props.Error });
+  });
   return (
     <TextField.Root
       class={styles.input_root}

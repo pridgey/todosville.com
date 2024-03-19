@@ -23,17 +23,27 @@ export const getUser = cache(async () => {
 
 export const loginOrRegister = action(async (formData: FormData) => {
   "use server";
-  const username = String(formData.get("username"));
+  const email = String(formData.get("email"));
   const password = String(formData.get("password"));
   const loginType = String(formData.get("loginType"));
-  let error = validateUsername(username) || validatePassword(password);
-  if (error) return new Error(error);
+
+  const emailError = validateUsername(email);
+  const passwordError = validatePassword(password);
+
+  if (emailError || passwordError) {
+    return {
+      error: {
+        email: emailError,
+        password: passwordError,
+      },
+    };
+  }
 
   try {
     // Try and login or register
     const user = await (loginType !== "login"
-      ? register(username, password)
-      : login(username, password));
+      ? register(email, password)
+      : login(email, password));
   } catch (err) {
     return err as Error;
   }
