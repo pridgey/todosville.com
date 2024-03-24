@@ -21,8 +21,13 @@
   padding: var(--spacing-small);
 }
 
-.input_helper {
+.input_helper,
+.input_error {
   color: var(--color-text);
   font-family: var(--font-family);
   font-size: var(--font-size-small);
+}
+
+.input_error {
+  color: var(--color-error);
 }

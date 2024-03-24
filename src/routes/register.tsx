@@ -1,29 +1,33 @@
 import { useSubmission, type RouteSectionProps } from "@solidjs/router";
+import { createMemo } from "solid-js";
 import { Show } from "solid-js/web";
-import { loginOrRegister } from "~/lib";
-import styles from "~/styles/authStyles.module.css";
 import { Button } from "~/components/button";
 import { Flex } from "~/components/flex";
 import { Input } from "~/components/input";
 import { Text } from "~/components/text";
-import { createEffect, createSignal } from "solid-js";
+import { loginOrRegister } from "~/lib";
+import styles from "~/styles/authStyles.module.css";
 
-export default function Login(props: RouteSectionProps) {
-  const loggingIn = useSubmission(loginOrRegister);
+export default function Register(props: RouteSectionProps) {
+  const registering = useSubmission(loginOrRegister);
 
-  const [emailError, setEmailError] = createSignal("");
-  const [passwordError, setPasswordError] = createSignal("");
-  const [loginError, setLoginError] = createSignal("");
+  const data = createMemo(() => {
+    const result = registering.result;
 
-  createEffect(() => {
-    const result = loggingIn.result;
+    let emailError;
+    let passwordError;
+    let confirmError;
+    let registerError;
 
-    if (!(result instanceof Error)) {
-      setEmailError(result?.error.email ?? "");
-      setPasswordError(result?.error.password ?? "");
+    if (result instanceof Error) {
+      registerError = result.message;
     } else {
-      setLoginError(result.message);
+      emailError = result?.error.email;
+      passwordError = result?.error.password;
+      confirmError = result?.error.confirm;
     }
+
+    return { emailError, passwordError, confirmError, registerError };
   });
 
   return (
@@ -34,28 +38,35 @@ export default function Login(props: RouteSectionProps) {
             Todosville
           </Text>
           <Text As="h2" FontSize="header" FontWeight="semibold">
-            Login
+            Register
           </Text>
-          <Show when={!!loginError()}>
+          <Show when={!!data().registerError}>
             <Text As="h3" Color="error" FontSize="text" FontWeight="semibold">
-              {loginError()}
+              {data().registerError}
             </Text>
           </Show>
           <form action={loginOrRegister} method="post">
             <Flex Direction="column" Gap="medium" Width="100%">
-              <input type="hidden" name="loginType" value="login" />
+              <input type="hidden" name="loginType" value="register" />
               <Input
-                Error={emailError()}
+                Error={data().emailError}
                 Label="Email"
                 Name="email"
                 Placeholder="superCool@realfly.wiz"
               />
               <Input
-                Error={passwordError()}
+                Error={data().passwordError}
                 HelperText="At least 6 characters"
                 Label="Password"
                 Name="password"
                 Placeholder="super secure like me 🥲"
+                Type="password"
+              />
+              <Input
+                Error={data().confirmError}
+                Label="Confirm Password"
+                Name="confirm"
+                Placeholder="double check"
                 Type="password"
               />
             </Flex>
@@ -72,28 +83,21 @@ export default function Login(props: RouteSectionProps) {
                 Width="100%"
               >
                 <Button
-                  Disabled={loggingIn.pending}
+                  Disabled={registering.pending}
                   OnClick={() => undefined}
-                  Variant="text"
-                >
-                  Forgot Password
-                </Button>
-                <Button
-                  Disabled={loggingIn.pending}
-                  OnClick={() => undefined}
-                  Pending={loggingIn.pending}
+                  Pending={registering.pending}
                   Type="submit"
                 >
-                  Login
+                  Register
                 </Button>
               </Flex>
               <Flex Direction="row" JustifyContent="flex-end">
                 <Button
-                  Disabled={loggingIn.pending}
+                  Disabled={registering.pending}
                   OnClick={() => undefined}
                   Variant="text"
                 >
-                  Create an account
+                  Go to Login
                 </Button>
               </Flex>
             </Flex>

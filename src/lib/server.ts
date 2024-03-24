@@ -16,6 +16,16 @@ export function validatePassword(password: unknown) {
   }
 }
 
+export function validateConfirm(password: unknown, confirm: unknown) {
+  if (
+    typeof password !== "string" ||
+    typeof confirm !== "string" ||
+    password !== confirm
+  ) {
+    return "Password confirmation does not match";
+  }
+}
+
 export async function login(username: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: username,

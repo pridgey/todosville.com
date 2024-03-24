@@ -4,7 +4,7 @@ export type FlexProps = {
   AlignItems?: "flex-start" | "flex-end" | "center";
   children: JSX.Element;
   Direction: "row" | "column";
-  Gap?: string;
+  Gap?: "small" | "medium" | "large";
   JustifyContent?:
     | "flex-start"
     | "flex-end"
@@ -23,9 +23,9 @@ export const Flex = (props: FlexProps) => {
         display: "flex",
         "align-items": props.AlignItems,
         "flex-direction": props.Direction,
-        gap: props.Gap,
+        gap: `var(--spacing-${props.Gap})`,
         "justify-content": props.JustifyContent,
-        padding: props.Padding,
+        padding: `var(--spacing-${props.Padding})`,
         width: props.Width,
       }}
     >
