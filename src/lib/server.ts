@@ -60,6 +60,66 @@ export async function register(username: string, password: string) {
   return data.user;
 }
 
+export async function sendPasswordReset(email: string) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.SITE_URL ?? ""}/reset-password`,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export async function resetUserPassword(
+  accessToken: string,
+  refreshToken: string,
+  email: string,
+  newPassword: string
+) {
+  const { error: sessionError } = await supabase.auth.setSession({
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
+  }
+
+  const { data, error: updateError } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (updateError) {
+    throw new Error(updateError.message);
+  }
+
+  if (data.user.email !== email) {
+    throw new Error("Unrecognized Email address for request.");
+  }
+
+  await supabase.auth.signOut();
+
+  return true;
+}
+
+export async function resendConfirmation(email: string) {
+  const { data, error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: {
+      emailRedirectTo: `${process.env.SITE_URL ?? ""}/login`,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
 export async function getSession() {
   return await supabase.auth.getSession();
 }

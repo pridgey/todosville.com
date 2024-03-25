@@ -9,29 +9,28 @@ import { Button } from "~/components/button";
 import { Flex } from "~/components/flex";
 import { Input } from "~/components/input";
 import { Text } from "~/components/text";
-import { loginOrRegister } from "~/lib";
+import { resendConfirmationEmail } from "~/lib";
 import styles from "~/styles/authStyles.module.css";
 
-export default function Register(props: RouteSectionProps) {
-  const registering = useSubmission(loginOrRegister);
+export default function ResendConfirmation(props: RouteSectionProps) {
+  const resending = useSubmission(resendConfirmationEmail);
 
   const data = createMemo(() => {
-    const result = registering.result;
+    const result = resending.result;
 
     let emailError;
-    let passwordError;
-    let confirmError;
-    let registerError;
+    let resendError;
+    let resendSuccess = false;
 
     if (result instanceof Error) {
-      registerError = result.message;
-    } else {
+      resendError = result.message;
+    } else if (typeof result !== "boolean") {
       emailError = result?.error.email;
-      passwordError = result?.error.password;
-      confirmError = result?.error.confirm;
+    } else if (typeof result === "boolean") {
+      resendSuccess = result;
     }
 
-    return { emailError, passwordError, confirmError, registerError };
+    return { emailError, resendError, resendSuccess };
   });
 
   return (
@@ -42,36 +41,29 @@ export default function Register(props: RouteSectionProps) {
             Todosville
           </Text>
           <Text As="h2" FontSize="header" FontWeight="semibold">
-            Register
+            Resend Confirmation Email
           </Text>
-          <Show when={!!data().registerError}>
+          <Text>
+            Please enter your email below to begin the confirmation process.
+          </Text>
+          <Show when={!!data().resendError}>
             <Text As="h3" Color="error" FontSize="text" FontWeight="semibold">
-              {data().registerError}
+              {data().resendError}
             </Text>
           </Show>
-          <form action={loginOrRegister} method="post">
+          <Show when={!!data().resendSuccess}>
+            <Text As="h3" Color="success" FontSize="text" FontWeight="semibold">
+              The resend request has been completed. Please check your inbox for
+              the new confirmation request.
+            </Text>
+          </Show>
+          <form action={resendConfirmationEmail} method="post">
             <Flex Direction="column" Gap="medium" Width="100%">
-              <input type="hidden" name="loginType" value="register" />
               <Input
                 Error={data().emailError}
                 Label="Email"
                 Name="email"
-                Placeholder="yourOldHighschoolEmail@cringe.net"
-              />
-              <Input
-                Error={data().passwordError}
-                HelperText="At least 6 characters"
-                Label="Password"
-                Name="password"
-                Placeholder="super secure, like me 🥲"
-                Type="password"
-              />
-              <Input
-                Error={data().confirmError}
-                Label="Confirm Password"
-                Name="confirm"
-                Placeholder="double check"
-                Type="password"
+                Placeholder="The email your registered with"
               />
             </Flex>
             <Flex
@@ -86,21 +78,17 @@ export default function Register(props: RouteSectionProps) {
                 JustifyContent="flex-end"
                 Width="100%"
               >
-                <Button Href="/resend-confirmation" Variant="text">
-                  Resend Confirmation Email
-                </Button>
                 <Button
-                  Disabled={registering.pending}
-                  OnClick={() => undefined}
-                  Pending={registering.pending}
+                  Disabled={resending.pending}
+                  Pending={resending.pending}
                   Type="submit"
                 >
-                  Register
+                  Resend
                 </Button>
               </Flex>
               <Flex Direction="row" JustifyContent="flex-end">
                 <Button
-                  Disabled={registering.pending}
+                  Disabled={resending.pending}
                   Href="/login"
                   Variant="text"
                 >

@@ -2,36 +2,61 @@ import {
   useSubmission,
   type RouteSectionProps,
   useAction,
+  useSearchParams,
+  useLocation,
 } from "@solidjs/router";
-import { createMemo } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import { Show } from "solid-js/web";
 import { Button } from "~/components/button";
 import { Flex } from "~/components/flex";
 import { Input } from "~/components/input";
 import { Text } from "~/components/text";
-import { loginOrRegister } from "~/lib";
+import { resetPassword } from "~/lib";
 import styles from "~/styles/authStyles.module.css";
 
-export default function Register(props: RouteSectionProps) {
-  const registering = useSubmission(loginOrRegister);
+export default function ResetPassword(props: RouteSectionProps) {
+  const resetPasswordAction = useSubmission(resetPassword);
+  const location = useLocation();
+
+  const [accessToken, setAccessToken] = createSignal("");
+  const [refreshToken, setRefreshToken] = createSignal("");
+
+  const hashParams = createMemo(() => {
+    const params = new URLSearchParams(location.hash.slice(1));
+
+    const token = params.get("access_token") ?? "";
+    const refresh = params.get("refresh_token") ?? "";
+
+    console.log("Memo", { params, token, refresh });
+
+    return { token, refresh };
+  });
+
+  createEffect(() => {
+    setAccessToken(hashParams().token);
+    setRefreshToken(hashParams().refresh);
+  });
 
   const data = createMemo(() => {
-    const result = registering.result;
+    const result = resetPasswordAction.result;
 
     let emailError;
     let passwordError;
     let confirmError;
-    let registerError;
+    let actionError;
+    let actionSuccess = false;
 
     if (result instanceof Error) {
-      registerError = result.message;
-    } else {
+      actionError = result.message;
+    } else if (typeof result !== "boolean") {
       emailError = result?.error.email;
       passwordError = result?.error.password;
       confirmError = result?.error.confirm;
+    } else if (typeof result === "boolean") {
+      actionSuccess = result;
     }
 
-    return { emailError, passwordError, confirmError, registerError };
+    return { emailError, actionError, actionSuccess };
   });
 
   return (
@@ -42,35 +67,43 @@ export default function Register(props: RouteSectionProps) {
             Todosville
           </Text>
           <Text As="h2" FontSize="header" FontWeight="semibold">
-            Register
+            Reset Password
           </Text>
-          <Show when={!!data().registerError}>
+          <Text>
+            Please fill in the following fields to reset your password.
+          </Text>
+          <Show when={!!data().actionError}>
             <Text As="h3" Color="error" FontSize="text" FontWeight="semibold">
-              {data().registerError}
+              {data().actionError}
             </Text>
           </Show>
-          <form action={loginOrRegister} method="post">
+          <Show when={!!data().actionSuccess}>
+            <Text As="h3" Color="success" FontSize="text" FontWeight="semibold">
+              Your password reset has been successful. You can no login.
+            </Text>
+          </Show>
+          <form action={resetPassword} method="post">
+            <input type="hidden" name="access_token" value={accessToken()} />
+            <input type="hidden" name="refresh_token" value={refreshToken()} />
             <Flex Direction="column" Gap="medium" Width="100%">
-              <input type="hidden" name="loginType" value="register" />
               <Input
                 Error={data().emailError}
                 Label="Email"
                 Name="email"
-                Placeholder="yourOldHighschoolEmail@cringe.net"
+                Placeholder="The email your registered with"
               />
               <Input
-                Error={data().passwordError}
-                HelperText="At least 6 characters"
-                Label="Password"
+                Error={data().emailError}
+                Label="New Password"
                 Name="password"
-                Placeholder="super secure, like me 🥲"
+                Placeholder="Memorable, yet strong"
                 Type="password"
               />
               <Input
-                Error={data().confirmError}
+                Error={data().emailError}
                 Label="Confirm Password"
                 Name="confirm"
-                Placeholder="double check"
+                Placeholder="Confirm the new password"
                 Type="password"
               />
             </Flex>
@@ -86,21 +119,17 @@ export default function Register(props: RouteSectionProps) {
                 JustifyContent="flex-end"
                 Width="100%"
               >
-                <Button Href="/resend-confirmation" Variant="text">
-                  Resend Confirmation Email
-                </Button>
                 <Button
-                  Disabled={registering.pending}
-                  OnClick={() => undefined}
-                  Pending={registering.pending}
+                  Disabled={resetPasswordAction.pending}
+                  Pending={resetPasswordAction.pending}
                   Type="submit"
                 >
-                  Register
+                  Reset Password
                 </Button>
               </Flex>
               <Flex Direction="row" JustifyContent="flex-end">
                 <Button
-                  Disabled={registering.pending}
+                  Disabled={resetPasswordAction.pending}
                   Href="/login"
                   Variant="text"
                 >

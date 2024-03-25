@@ -9,6 +9,11 @@
   font-size: var(--font-size-text);
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-small);
+  white-space: nowrap;
+}
+
+.button_link {
+  text-decoration: none;
 }
 
 .button:hover {

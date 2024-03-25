@@ -48,14 +48,14 @@ export default function Login(props: RouteSectionProps) {
                 Error={emailError()}
                 Label="Email"
                 Name="email"
-                Placeholder="superCool@realfly.wiz"
+                Placeholder="wellwell@whatsall.disden"
               />
               <Input
                 Error={passwordError()}
                 HelperText="At least 6 characters"
                 Label="Password"
                 Name="password"
-                Placeholder="super secure like me 🥲"
+                Placeholder="super secure, like me 🥲"
                 Type="password"
               />
             </Flex>
@@ -63,7 +63,7 @@ export default function Login(props: RouteSectionProps) {
               AlignItems="flex-end"
               Direction="column"
               Gap="medium"
-              Padding="medium"
+              PaddingY="medium"
             >
               <Flex
                 Direction="row"
@@ -73,7 +73,7 @@ export default function Login(props: RouteSectionProps) {
               >
                 <Button
                   Disabled={loggingIn.pending}
-                  OnClick={() => undefined}
+                  Href="/forgot-password"
                   Variant="text"
                 >
                   Forgot Password
@@ -90,7 +90,7 @@ export default function Login(props: RouteSectionProps) {
               <Flex Direction="row" JustifyContent="flex-end">
                 <Button
                   Disabled={loggingIn.pending}
-                  OnClick={() => undefined}
+                  Href="/register"
                   Variant="text"
                 >
                   Create an account

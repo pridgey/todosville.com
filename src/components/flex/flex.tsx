@@ -1,4 +1,5 @@
 import type { JSX } from "solid-js";
+import { paddingToCSS } from "~/styles/themeUtils";
 
 export type FlexProps = {
   AlignItems?: "flex-start" | "flex-end" | "center";
@@ -13,6 +14,8 @@ export type FlexProps = {
     | "space-around"
     | "space-evenly";
   Padding?: "small" | "medium" | "large";
+  PaddingX?: "small" | "medium" | "large";
+  PaddingY?: "small" | "medium" | "large";
   Width?: string;
 };
 
@@ -25,7 +28,10 @@ export const Flex = (props: FlexProps) => {
         "flex-direction": props.Direction,
         gap: `var(--spacing-${props.Gap})`,
         "justify-content": props.JustifyContent,
-        padding: `var(--spacing-${props.Padding})`,
+        padding: paddingToCSS(
+          props.PaddingX ?? props.Padding,
+          props.PaddingY ?? props.Padding
+        ),
         width: props.Width,
       }}
     >

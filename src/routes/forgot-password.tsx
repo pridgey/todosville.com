@@ -9,29 +9,28 @@ import { Button } from "~/components/button";
 import { Flex } from "~/components/flex";
 import { Input } from "~/components/input";
 import { Text } from "~/components/text";
-import { loginOrRegister } from "~/lib";
+import { sendPasswordResetEmail } from "~/lib";
 import styles from "~/styles/authStyles.module.css";
 
-export default function Register(props: RouteSectionProps) {
-  const registering = useSubmission(loginOrRegister);
+export default function ForgotPassword(props: RouteSectionProps) {
+  const sending = useSubmission(sendPasswordResetEmail);
 
   const data = createMemo(() => {
-    const result = registering.result;
+    const result = sending.result;
 
     let emailError;
-    let passwordError;
-    let confirmError;
-    let registerError;
+    let sendError;
+    let sendSuccess = false;
 
     if (result instanceof Error) {
-      registerError = result.message;
-    } else {
+      sendError = result.message;
+    } else if (typeof result !== "boolean") {
       emailError = result?.error.email;
-      passwordError = result?.error.password;
-      confirmError = result?.error.confirm;
+    } else if (typeof result === "boolean") {
+      sendSuccess = result;
     }
 
-    return { emailError, passwordError, confirmError, registerError };
+    return { emailError, sendError, sendSuccess };
   });
 
   return (
@@ -42,36 +41,27 @@ export default function Register(props: RouteSectionProps) {
             Todosville
           </Text>
           <Text As="h2" FontSize="header" FontWeight="semibold">
-            Register
+            Forgot Password
           </Text>
-          <Show when={!!data().registerError}>
+          <Text>Please enter your email below to begin the reset process.</Text>
+          <Show when={!!data().sendError}>
             <Text As="h3" Color="error" FontSize="text" FontWeight="semibold">
-              {data().registerError}
+              {data().sendError}
             </Text>
           </Show>
-          <form action={loginOrRegister} method="post">
+          <Show when={!!data().sendSuccess}>
+            <Text As="h3" Color="success" FontSize="text" FontWeight="semibold">
+              The reset request has been started. Please check your inbox to
+              continue your password reset request.
+            </Text>
+          </Show>
+          <form action={sendPasswordResetEmail} method="post">
             <Flex Direction="column" Gap="medium" Width="100%">
-              <input type="hidden" name="loginType" value="register" />
               <Input
                 Error={data().emailError}
                 Label="Email"
                 Name="email"
-                Placeholder="yourOldHighschoolEmail@cringe.net"
-              />
-              <Input
-                Error={data().passwordError}
-                HelperText="At least 6 characters"
-                Label="Password"
-                Name="password"
-                Placeholder="super secure, like me 🥲"
-                Type="password"
-              />
-              <Input
-                Error={data().confirmError}
-                Label="Confirm Password"
-                Name="confirm"
-                Placeholder="double check"
-                Type="password"
+                Placeholder="The email your registered with"
               />
             </Flex>
             <Flex
@@ -86,24 +76,16 @@ export default function Register(props: RouteSectionProps) {
                 JustifyContent="flex-end"
                 Width="100%"
               >
-                <Button Href="/resend-confirmation" Variant="text">
-                  Resend Confirmation Email
-                </Button>
                 <Button
-                  Disabled={registering.pending}
-                  OnClick={() => undefined}
-                  Pending={registering.pending}
+                  Disabled={sending.pending}
+                  Pending={sending.pending}
                   Type="submit"
                 >
-                  Register
+                  Get Reset Link
                 </Button>
               </Flex>
               <Flex Direction="row" JustifyContent="flex-end">
-                <Button
-                  Disabled={registering.pending}
-                  Href="/login"
-                  Variant="text"
-                >
+                <Button Disabled={sending.pending} Href="/login" Variant="text">
                   Go to Login
                 </Button>
               </Flex>
