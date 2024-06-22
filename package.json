@@ -1,5 +1,5 @@
 {
-  "name": "todosville.com",
+  "name": "example-with-auth",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
@@ -7,17 +7,15 @@
     "start": "vinxi start"
   },
   "devDependencies": {
-    "@types/node": "^20.10.1"
+    "@types/node": "^20.12.7"
   },
   "dependencies": {
-    "@kobalte/core": "^0.12.6",
-    "@solidjs/router": "^0.13.0",
-    "@solidjs/start": "^0.7.5",
-    "@supabase/supabase-js": "^2.39.8",
-    "solid-icons": "^1.1.0",
-    "solid-js": "^1.8.15",
-    "unstorage": "1.10.1",
-    "vinxi": "^0.3.10"
+    "@solidjs/router": "^0.13.6",
+    "@solidjs/start": "^1.0.2",
+    "pocketbase": "^0.21.3",
+    "solid-js": "^1.8.17",
+    "unstorage": "1.10.2",
+    "vinxi": "^0.3.12"
   },
   "engines": {
     "node": ">=18"

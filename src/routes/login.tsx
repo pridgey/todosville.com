@@ -1,105 +1,79 @@
-import { useSubmission, type RouteSectionProps } from "@solidjs/router";
-import { Show } from "solid-js/web";
-import { loginOrRegister } from "~/lib";
-import styles from "~/styles/authStyles.module.css";
-import { Button } from "~/components/button";
-import { Flex } from "~/components/flex";
-import { Input } from "~/components/input";
-import { Text } from "~/components/text";
-import { createEffect, createSignal } from "solid-js";
+import {
+  useAction,
+  useSubmission,
+  type RouteSectionProps,
+} from "@solidjs/router";
+import { Show } from "solid-js";
+import { setUserInSession } from "~/lib";
+import PocketBase from "pocketbase";
 
 export default function Login(props: RouteSectionProps) {
-  const loggingIn = useSubmission(loginOrRegister);
-
-  const [emailError, setEmailError] = createSignal("");
-  const [passwordError, setPasswordError] = createSignal("");
-  const [loginError, setLoginError] = createSignal("");
-
-  createEffect(() => {
-    const result = loggingIn.result;
-
-    if (!(result instanceof Error)) {
-      setEmailError(result?.error.email ?? "");
-      setPasswordError(result?.error.password ?? "");
-    } else {
-      setLoginError(result.message);
-    }
-  });
+  const setSessionData = useAction(setUserInSession);
+  const settingSession = useSubmission(setUserInSession);
 
   return (
-    <main class={styles.layout}>
-      <section class={styles.auth_container}>
-        <Flex Direction="column" Gap="large" Width="50%">
-          <Text As="h1" FontSize="extra-large" FontWeight="bold">
-            Todosville
-          </Text>
-          <Text As="h2" FontSize="header" FontWeight="semibold">
+    <main>
+      <h1>Login</h1>
+      <button
+        onClick={async () => {
+          "use client";
+          try {
+            const client = new PocketBase(
+              import.meta.env.VITE_POCKETBASE_URL ?? ""
+            );
+
+            const user = await client
+              .collection("users")
+              .authWithOAuth2({ provider: "google" });
+
+            const cookie = client.authStore.exportToCookie();
+            console.log("COOKIE:", cookie);
+
+            await setSessionData({
+              userId: user.meta?.id ?? "",
+              email: user.meta?.email ?? "",
+              cookie,
+            });
+
+            console.log("USER:", { user });
+          } catch (err) {
+            console.error("Error logging in with Google:", err);
+          }
+        }}
+      >
+        Login with Google
+      </button>
+      {/* <form action={loginOrRegister} method="post">
+        <input
+          type="hidden"
+          name="redirectTo"
+          value={props.params.redirectTo ?? "/"}
+        />
+        <fieldset>
+          <legend>Login or Register?</legend>
+          <label>
+            <input type="radio" name="loginType" value="login" checked={true} />{" "}
             Login
-          </Text>
-          <Show when={!!loginError()}>
-            <Text As="h3" Color="error" FontSize="text" FontWeight="semibold">
-              {loginError()}
-            </Text>
-          </Show>
-          <form action={loginOrRegister} method="post">
-            <Flex Direction="column" Gap="medium" Width="100%">
-              <input type="hidden" name="loginType" value="login" />
-              <Input
-                Error={emailError()}
-                Label="Email"
-                Name="email"
-                Placeholder="wellwell@whatsall.disden"
-              />
-              <Input
-                Error={passwordError()}
-                HelperText="At least 6 characters"
-                Label="Password"
-                Name="password"
-                Placeholder="super secure, like me 🥲"
-                Type="password"
-              />
-            </Flex>
-            <Flex
-              AlignItems="flex-end"
-              Direction="column"
-              Gap="medium"
-              PaddingY="medium"
-            >
-              <Flex
-                Direction="row"
-                Gap="medium"
-                JustifyContent="flex-end"
-                Width="100%"
-              >
-                <Button
-                  Disabled={loggingIn.pending}
-                  Href="/forgot-password"
-                  Variant="text"
-                >
-                  Forgot Password
-                </Button>
-                <Button
-                  Disabled={loggingIn.pending}
-                  OnClick={() => undefined}
-                  Pending={loggingIn.pending}
-                  Type="submit"
-                >
-                  Login
-                </Button>
-              </Flex>
-              <Flex Direction="row" JustifyContent="flex-end">
-                <Button
-                  Disabled={loggingIn.pending}
-                  Href="/register"
-                  Variant="text"
-                >
-                  Create an account
-                </Button>
-              </Flex>
-            </Flex>
-          </form>
-        </Flex>
-      </section>
+          </label>
+          <label>
+            <input type="radio" name="loginType" value="register" /> Register
+          </label>
+        </fieldset>
+        <div>
+          <label for="username-input">Username</label>
+          <input name="username" placeholder="kody" />
+        </div>
+        <div>
+          <label for="password-input">Password</label>
+          <input name="password" type="password" placeholder="twixrox" />
+        </div>
+        <button type="submit">Login</button>
+      </form> */}
+      <Show when={settingSession.result}>
+        <p style={{ color: "red" }} role="alert" id="error-message">
+          {settingSession.result!.message}
+        </p>
+      </Show>
     </main>
   );
 }

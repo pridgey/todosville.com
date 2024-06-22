@@ -1,8 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.SUPABASE_URL ?? "no_url_found";
-const supabaseKey = process.env.SUPABASE_KEY ?? "no_key_found";
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { useSession } from "vinxi/http";
 
 export function validateUsername(username: unknown) {
   if (typeof username !== "string" || username.length < 3) {
@@ -16,110 +12,43 @@ export function validatePassword(password: unknown) {
   }
 }
 
-export function validateConfirm(password: unknown, confirm: unknown) {
-  if (
-    typeof password !== "string" ||
-    typeof confirm !== "string" ||
-    password !== confirm
-  ) {
-    return "Password confirmation does not match";
-  }
-}
+/**
+ * Currently unused
+ */
+// export async function login(username: string, password: string) {
+//   const user = await db.user.findUnique({ where: { username } });
+//   if (!user || password !== user.password) throw new Error("Invalid login");
+//   return user;
+// }
 
-export async function login(username: string, password: string) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: username,
-    password,
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data.user;
-}
-
+/**
+ * Clears the session data as a user logs out
+ */
 export async function logout() {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    throw new Error(error.message);
-  }
+  const session = await getSession();
+  await session.update((d) => {
+    d.userId = undefined;
+    d.cookie = undefined;
+  });
 }
 
-export async function register(username: string, password: string) {
-  const { data, error } = await supabase.auth.signUp({
-    email: username,
-    password,
+/**
+ * Currently unused
+ */
+// export async function register(username: string, password: string) {
+//   const existingUser = await db.user.findUnique({ where: { username } });
+//   if (existingUser) throw new Error("User already exists");
+//   return db.user.create({
+//     data: { username: username, password },
+//   });
+// }
+
+/**
+ * Gets the session
+ */
+export function getSession() {
+  return useSession({
+    password:
+      process.env.SESSION_SECRET ?? "areallylongsecretthatyoushouldreplace",
   });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data.user;
-}
-
-export async function sendPasswordReset(email: string) {
-  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.SITE_URL ?? ""}/reset-password`,
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-}
-
-export async function resetUserPassword(
-  accessToken: string,
-  refreshToken: string,
-  email: string,
-  newPassword: string
-) {
-  const { error: sessionError } = await supabase.auth.setSession({
-    access_token: accessToken,
-    refresh_token: refreshToken,
-  });
-
-  if (sessionError) {
-    throw new Error(sessionError.message);
-  }
-
-  const { data, error: updateError } = await supabase.auth.updateUser({
-    password: newPassword,
-  });
-
-  if (updateError) {
-    throw new Error(updateError.message);
-  }
-
-  if (data.user.email !== email) {
-    throw new Error("Unrecognized Email address for request.");
-  }
-
-  await supabase.auth.signOut();
-
-  return true;
-}
-
-export async function resendConfirmation(email: string) {
-  const { data, error } = await supabase.auth.resend({
-    type: "signup",
-    email,
-    options: {
-      emailRedirectTo: `${process.env.SITE_URL ?? ""}/login`,
-    },
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-}
-
-export async function getSession() {
-  return await supabase.auth.getSession();
 }
