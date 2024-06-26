@@ -1,0 +1,65 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  width: var(--colapsible-width);
+}
+
+.collapsibleTrigger {
+  align-items: center;
+  background-color: transparent;
+  border: 0px;
+  color: var(--color-text);
+  display: inline-flex;
+  font-size: var(--font-size-header);
+  font-weight: var(--font-weight-semibold);
+  gap: var(--spacing-small);
+  outline: none;
+  padding: var(--padding-medium);
+  text-align: left;
+  width: 100%;
+}
+
+.collapsibleTrigger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.collapsibleTriggerIcon {
+  height: 20px;
+  transition: transform 250ms;
+  width: 20px;
+}
+
+.collapsibleTrigger[data-expanded] .collapsibleTriggerIcon {
+  transform: rotateZ(180deg);
+}
+
+.collapsibleContent {
+  animation: slideUp 300ms ease-out;
+  border: 0px;
+  color: var(--color-text);
+  overflow: hidden;
+  width: 100%;
+}
+
+.collapsibleContent[data-expanded] {
+  animation: slideDown 300ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--kb-collapsible-content-height);
+  }
+}
+@keyframes slideUp {
+  from {
+    height: var(--kb-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}

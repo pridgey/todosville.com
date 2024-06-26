@@ -1,39 +1,105 @@
+@font-face {
+  font-family: "Domine";
+  src: url("/fonts/Domine-VariableFont_wght.ttf") format("truetype");
+}
+
+:root,
+.light-override {
+  /* Color Pallete */
+  --color-primary: #54819b;
+  --color-secondary: #516e99;
+  --color-tertiary: #885fba;
+  --color-success: #29751e;
+  --color-error: #bd1e44;
+  --color-gray: #cfc1c0;
+  --color-fullwhite: #ffffff;
+  --color-fullblack: #252525;
+  --color-white: #f8f5f3;
+  --color-black: #0a080a;
+  --color-backdrop: rgba(0, 0, 0, 0.6);
+  --color-text: var(--color-black);
+  --color-fullbackground: var(--color-fullwhite);
+  --color-fullforeground: var(--color-fullblack);
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-black);
+  --color-darken: 80%;
+  --color-darken-2: 70%;
+  --color-lighten: 120%;
+  --color-lighten-2: 130%;
+  /* Border-Radii (handled by rem) */
+  --border-radius: 1rem;
+  /* Box-Shadow */
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  --box-shadow-small: 0px 3px 3px 0px var(--shadow-color);
+  --box-shadow-medium: 0px 3px 8px 0px var(--shadow-color);
+  /* Spacing (handled by rem) */
+  --spacing-small: 1rem;
+  --spacing-medium: 2rem;
+  --spacing-large: 4rem;
+  /* Font Family */
+  --font-family: "Domine", Gordita, Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
+  /* Font Sizes (handled by rem) */
+  font-size: 8px;
+  --font-size-mini: 1.5rem; /* 8px */
+  --font-size-small: 1.85rem; /* 12px */
+  --font-size-text: 2rem; /* 16px */
+  --font-size-header: 3rem; /* 24px */
+  --font-size-large: 4rem; /* 32px */
+  --font-size-extra-large: 5rem; /* 40px */
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 700;
+}
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+  :root,
+  .dark-override {
+    --color-background: var(--color-black);
+    --color-foreground: var(--color-white);
+    --color-fullbackground: var(--color-fullblack);
+    --color-fullforeground: var(--color-fullwhite);
+    --color-gray: #625a59;
+    --color-text: var(--color-white);
+    --color-darken: 120%;
+    --color-darken-2: 130%;
+    --color-lighten: 80%;
+    --color-lighten-2: 70%;
+    --shadow-color: rgba(0, 0, 0, 0.75);
+  }
+}
+
+/* Some CSS Reset */
+html,
 body {
-  font-family: Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: var(--color-background);
+  margin: 0px;
+  padding: 0px;
 }
 
-a {
-  margin-right: 1rem;
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-text);
 }
 
-main {
-  text-align: center;
-  padding: 1em;
-  margin: 0 auto;
+* {
+  box-sizing: border-box;
 }
 
-h1 {
-  color: #335d92;
-  text-transform: uppercase;
-  font-size: 4rem;
-  font-weight: 100;
-  line-height: 1.1;
-  margin: 4rem auto;
-  max-width: 14rem;
-}
-
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 p {
-  max-width: 14rem;
-  margin: 2rem auto;
-  line-height: 1.35;
+  margin: 0px;
 }
 
-@media (min-width: 480px) {
-  h1 {
-    max-width: none;
-  }
-
-  p {
-    max-width: none;
-  }
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
