@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Domine";
-  src: url("/fonts/Domine-VariableFont_wght.ttf") format("truetype");
+  font-family: "Lora";
+  src: url("/fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
 }
 
 :root,
@@ -37,8 +37,8 @@
   --spacing-medium: 2rem;
   --spacing-large: 4rem;
   /* Font Family */
-  --font-family: "Domine", Gordita, Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif;
+  --font-family: "Lora", Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
   /* Font Sizes (handled by rem) */
   font-size: 8px;
   --font-size-mini: 1.5rem; /* 8px */

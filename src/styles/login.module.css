@@ -1,0 +1,27 @@
+.main {
+  bottom: 0px;
+  left: 0px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.background {
+  background-image: url("/loginBg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  bottom: 0px;
+  filter: blur(4px);
+  left: 0px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.content {
+  bottom: 0px;
+  left: 0px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}

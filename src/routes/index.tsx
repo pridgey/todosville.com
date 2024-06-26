@@ -1,5 +1,8 @@
 import { createAsync, type RouteDefinition } from "@solidjs/router";
 import { createEffect, createResource } from "solid-js";
+import { Button } from "~/components/Button";
+import { Flex } from "~/components/Flex";
+import { Text } from "~/components/Text";
 import { getUser, logout } from "~/lib";
 import { getClasses } from "~/lib/db";
 
@@ -16,14 +19,16 @@ export default function Home() {
   });
 
   return (
-    <main class="w-full p-4 space-y-2">
-      <h2 class="font-bold text-3xl">Hello {user()?.email}</h2>
-      <h3 class="font-bold text-xl">Message board</h3>
-      <form action={logout} method="post">
-        <button name="logout" type="submit">
-          Logout
-        </button>
-      </form>
+    <main>
+      <Flex AlignItems="center" Direction="column" Gap="medium">
+        <Text FontSize="extra-large" FontWeight="bold">
+          Todosville
+        </Text>
+        <Text FontSize="header">Hello {user()?.email}</Text>
+        <form action={logout} method="post">
+          <Button Type="submit">LOGOUT</Button>
+        </form>
+      </Flex>
     </main>
   );
 }

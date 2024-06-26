@@ -10,9 +10,11 @@
     "@types/node": "^20.12.7"
   },
   "dependencies": {
+    "@kobalte/core": "^0.13.3",
     "@solidjs/router": "^0.13.6",
     "@solidjs/start": "^1.0.2",
     "pocketbase": "^0.21.3",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.17",
     "unstorage": "1.10.2",
     "vinxi": "^0.3.12"
