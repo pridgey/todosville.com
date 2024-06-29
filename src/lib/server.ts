@@ -26,10 +26,7 @@ export function validatePassword(password: unknown) {
  */
 export async function logout() {
   const session = await getSession();
-  await session.update((d) => {
-    d.userId = undefined;
-    d.cookie = undefined;
-  });
+  await session.clear();
 }
 
 /**

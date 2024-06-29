@@ -3,9 +3,10 @@ import {
   useSubmission,
   type RouteSectionProps,
 } from "@solidjs/router";
-import { Show } from "solid-js";
+import { Show, createEffect, createResource } from "solid-js";
 import { setUserInSession } from "~/lib";
 import PocketBase from "pocketbase";
+import { getAllLists } from "~/lib/db";
 
 export default function Login(props: RouteSectionProps) {
   const setSessionData = useAction(setUserInSession);
@@ -18,6 +19,10 @@ export default function Login(props: RouteSectionProps) {
         onClick={async () => {
           "use client";
           try {
+            console.log("Try google login", {
+              url: import.meta.env.VITE_POCKETBASE_URL,
+            });
+
             const client = new PocketBase(
               import.meta.env.VITE_POCKETBASE_URL ?? ""
             );

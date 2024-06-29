@@ -8,7 +8,8 @@ import PocketBase from "pocketbase";
  */
 export const getPocketBase = async () => {
   "use server";
-  const client = new PocketBase(process.env.POCKETBASE_URL ?? "");
+  const client = new PocketBase(process.env.VITE_POCKETBASE_URL ?? "");
+
   try {
     const session = await getSession();
     const cookie = session.data.cookie;
