@@ -53,6 +53,9 @@ export const setUserInSession = action(
         theSession.email = data.email;
         theSession.cookie = data.cookie;
       });
+
+      // Redirect to home
+      return redirect("/");
     } catch (err) {
       return err as Error;
     }

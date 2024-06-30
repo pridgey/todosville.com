@@ -6,7 +6,6 @@ import {
 import { Show, createEffect, createResource } from "solid-js";
 import { setUserInSession } from "~/lib";
 import PocketBase from "pocketbase";
-import { getAllLists } from "~/lib/db";
 
 export default function Login(props: RouteSectionProps) {
   const setSessionData = useAction(setUserInSession);
