@@ -1,5 +1,5 @@
+import { getPocketBase } from "..";
 import { ListRecord } from "~/types/ListRecord";
-import { getPocketBase } from ".";
 import { action } from "@solidjs/router";
 
 /**

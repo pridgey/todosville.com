@@ -16,12 +16,14 @@ type CardProps = {
     | "text";
   children: JSX.Element;
   dropIn?: boolean;
+  height?: string;
   position?: "relative" | "absolute";
   top?: string;
   bottom?: string;
   left?: string;
   right?: string;
   variant?: "default" | "alternate";
+  width?: string;
 };
 
 export const Card = (props: CardProps) => {
@@ -48,6 +50,8 @@ export const Card = (props: CardProps) => {
           props.variant === "alternate"
             ? "var(--box-shadow-medium)"
             : "var(--box-shadow-small)",
+        "--card-height": props.height || "unset",
+        "--card-width": props.width || "unset",
       }}
     >
       {props.children}

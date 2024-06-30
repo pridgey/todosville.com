@@ -6,8 +6,10 @@
   color: var(--color-text);
   display: flex;
   flex-direction: column;
+  height: var(--card-height);
   gap: var(--spacing-medium);
   padding: var(--spacing-medium);
+  width: var(--card-width);
 }
 
 /* Drop-in Animation */
