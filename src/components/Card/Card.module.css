@@ -8,7 +8,8 @@
   flex-direction: column;
   height: var(--card-height);
   gap: var(--spacing-medium);
-  padding: var(--spacing-medium);
+  opacity: var(--card-opacity);
+  padding: var(--card-padding);
   width: var(--card-width);
 }
 

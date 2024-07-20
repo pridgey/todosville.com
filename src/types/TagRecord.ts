@@ -1,6 +1,6 @@
-export type ListRecord = {
+export type TagRecord = {
   id?: string;
-  list_name: string;
+  name: string;
   user: string;
   created?: string;
   updated?: string;

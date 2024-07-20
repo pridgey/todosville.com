@@ -1,10 +1,11 @@
 export type ListItemRecord = {
   id?: string;
   item_name: string;
-  list: string;
   user: string;
-  last_completed: string;
-  completion_timeout: number;
+  description: string;
+  cooldown_seconds: number;
   created?: string;
   updated?: string;
+  shared_users: string[];
+  tags: string[];
 };

@@ -17,6 +17,7 @@
   --color-white: #f8f5f3;
   --color-black: #0a080a;
   --color-backdrop: rgba(0, 0, 0, 0.6);
+  --color-backdrop-invert: rgba(255, 255, 255, 0.6);
   --color-text: var(--color-black);
   --color-fullbackground: var(--color-fullwhite);
   --color-fullforeground: var(--color-fullblack);

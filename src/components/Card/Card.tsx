@@ -14,15 +14,16 @@ type CardProps = {
     | "white"
     | "black"
     | "text";
+  bottom?: string;
   children: JSX.Element;
   dropIn?: boolean;
   height?: string;
-  position?: "relative" | "absolute";
-  top?: string;
-  bottom?: string;
   left?: string;
+  padding?: "small" | "medium" | "large";
+  position?: "relative" | "absolute";
   right?: string;
-  variant?: "default" | "alternate";
+  top?: string;
+  variant?: "default" | "alternate" | "transparent";
   width?: string;
 };
 
@@ -42,6 +43,8 @@ export const Card = (props: CardProps) => {
         "--card-background":
           props.variant === "alternate"
             ? "var(--color-fullbackground)"
+            : props.variant === "transparent"
+            ? "var(--color-backdrop-invert)"
             : "var(--color-background)",
         "--card-border": props.border
           ? `1px solid var(--color-${props.border})`
@@ -52,6 +55,9 @@ export const Card = (props: CardProps) => {
             : "var(--box-shadow-small)",
         "--card-height": props.height || "unset",
         "--card-width": props.width || "unset",
+        "--card-padding": props.padding
+          ? `var(--spacing-${props.padding})`
+          : "var(--spacing-medium)",
       }}
     >
       {props.children}

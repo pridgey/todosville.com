@@ -1,26 +1,43 @@
-import { getPocketBase } from "..";
-import { ListRecord } from "~/types/ListRecord";
-import { action } from "@solidjs/router";
+import { getPocketBase, getUser } from "..";
 import { ListItemRecord } from "~/types/ListItemRecord";
+import { action } from "@solidjs/router";
+import { TagRecord } from "~/types/TagRecord";
+import { CompletedItemRecords } from "~/types/CompletedItemRecord";
 
 /**
  * Gets all list items given a list id
  * @returns list_item record array
  */
-export const getAllItemsForList = async (listID: string) => {
+export const getAllItemsForUser = async () => {
   "use server";
   try {
     const client = await getPocketBase();
+    const user = await getUser();
 
-    console.log("GetAllItemsForList", listID);
-
+    // Get all list items for the current user
     const listItems = await client
-      .collection<ListItemRecord>("list_item")
+      .collection<ListItemRecord>("list_items")
       .getFullList({
-        filter: `list.id = "${listID}"`,
+        filter: `user.id = "${user.id}" || shared_users ~ "${user.id}"`,
       });
 
-    console.log("GetAllItemsForList Results", listItems);
+    // Get all tags for the current user
+    const itemTags = await client.collection<TagRecord>("tags").getFullList({
+      filter: `user.id = "${user.id}"`,
+    });
+
+    // Get complition data for the list items
+    const itemCompletions = await client
+      .collection<CompletedItemRecords>("completed_items")
+      .getFullList({
+        filter: listItems.map((li) => `item.id = "${li.id}"`).join(" || "),
+      });
+
+    console.log("GetAllItemsForUser Results", {
+      listItems,
+      itemTags,
+      itemCompletions,
+    });
 
     return listItems;
   } catch (err) {
@@ -39,7 +56,7 @@ export const createListItem = action(async (item: ListItemRecord) => {
   try {
     const client = await getPocketBase();
 
-    await client.collection<ListItemRecord>("list_item").create(item);
+    await client.collection<ListItemRecord>("list_items").create(item);
 
     return true;
   } catch (err) {
