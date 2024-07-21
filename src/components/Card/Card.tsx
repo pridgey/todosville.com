@@ -19,6 +19,7 @@ type CardProps = {
   dropIn?: boolean;
   height?: string;
   left?: string;
+  margin?: "small" | "medium" | "large";
   padding?: "small" | "medium" | "large";
   position?: "relative" | "absolute";
   right?: string;
@@ -39,6 +40,7 @@ export const Card = (props: CardProps) => {
         top: props.top,
         bottom: props.bottom,
         left: props.left,
+        margin: props.margin ? `var(--spacing-${props.margin})` : "unset",
         right: props.right,
         "--card-background":
           props.variant === "alternate"

@@ -4,11 +4,14 @@ import { Button } from "~/components/Button";
 import { Card } from "~/components/Card";
 import { Divider } from "~/components/Divider";
 import { Flex } from "~/components/Flex";
+import { Grid } from "~/components/Grid";
 import { Input } from "~/components/Input";
 import { Text } from "~/components/Text";
+import { ListItemCard } from "~/compositions/ListItemCard";
 import { getUser, logout } from "~/lib";
 import { createListItem, getAllItemsForUser } from "~/lib/db";
 import homeStyles from "~/styles/home.module.css";
+import { Mason } from "solid-mason";
 
 export const route = {
   load: () => getUser(),
@@ -98,9 +101,14 @@ export default function Home() {
                   </Button>
                 </Flex>
                 <Divider />
-                <For each={listItems()}>
-                  {(item) => <Card variant="alternate">{item.item_name}</Card>}
-                </For>
+                {/* <Grid
+                  Columns="repeat(auto-fill, minmax(300px, 1fr))"
+                  Gap="small"
+                > */}
+                <Mason as="div" items={listItems()} columns={4}>
+                  {(item) => <ListItemCard {...item} />}
+                </Mason>
+                {/* </Grid> */}
               </Flex>
             </Card>
           </Card>

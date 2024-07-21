@@ -16,7 +16,11 @@ export type ButtonProps = {
     | "fullblack"
     | "white"
     | "black"
-    | "text";
+    | "text"
+    | "foreground"
+    | "background"
+    | "fullbackground"
+    | "fullforeground";
   children: JSX.Element;
   Disabled?: boolean;
   DisableRadius?: boolean;

@@ -6,6 +6,7 @@ export type FlexProps = {
   children: JSX.Element;
   Direction: "row" | "column";
   Gap?: "small" | "medium" | "large";
+  Height?: string;
   JustifyContent?:
     | "flex-start"
     | "flex-end"
@@ -29,6 +30,7 @@ export const Flex = (props: FlexProps) => {
         "flex-direction": props.Direction,
         "flex-wrap": props.Wrap ?? "nowrap",
         gap: `var(--spacing-${props.Gap})`,
+        height: props.Height,
         "justify-content": props.JustifyContent,
         padding: paddingToCSS(
           props.PaddingX ?? props.Padding,

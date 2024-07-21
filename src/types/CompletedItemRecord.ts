@@ -1,4 +1,4 @@
-export type CompletedItemRecords = {
+export type CompletedItemRecord = {
   id?: string;
   item: string;
   completed_by: string;
