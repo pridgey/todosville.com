@@ -2,7 +2,7 @@ import { CompletedItemRecord } from "./CompletedItemRecord";
 import { TagRecord } from "./TagRecord";
 
 export type ListItemUIRecord = {
-  id: string;
+  id?: string;
   item_name: string;
   user: string;
   description: string;
@@ -10,6 +10,6 @@ export type ListItemUIRecord = {
   created?: string;
   updated?: string;
   shared_users: string[];
-  LastCompleted: CompletedItemRecord;
+  LastCompleted?: CompletedItemRecord;
   tags: TagRecord[];
 };

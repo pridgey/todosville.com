@@ -101,14 +101,9 @@ export default function Home() {
                   </Button>
                 </Flex>
                 <Divider />
-                {/* <Grid
-                  Columns="repeat(auto-fill, minmax(300px, 1fr))"
-                  Gap="small"
-                > */}
                 <Mason as="div" items={listItems()} columns={4}>
                   {(item) => <ListItemCard {...item} />}
                 </Mason>
-                {/* </Grid> */}
               </Flex>
             </Card>
           </Card>

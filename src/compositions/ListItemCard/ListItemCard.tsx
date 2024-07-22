@@ -46,7 +46,7 @@ export const ListItemCard = (props: ListItemUIRecord) => {
             Padding="small"
             Variant="outlined"
           >
-            Add Tag
+            +
           </Button>
         </Flex>
       </Flex>

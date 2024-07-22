@@ -2,7 +2,7 @@ import { getPocketBase, getUser } from "..";
 import { ListItemRecord } from "~/types/ListItemRecord";
 import { action } from "@solidjs/router";
 import { TagRecord } from "~/types/TagRecord";
-import { CompletedItemRecords } from "~/types/CompletedItemRecord";
+import { CompletedItemRecord } from "~/types/CompletedItemRecord";
 
 /**
  * Gets all list items given a list id
@@ -28,18 +28,19 @@ export const getAllItemsForUser = async () => {
 
     // Get complition data for the list items
     const itemCompletions = await client
-      .collection<CompletedItemRecords>("completed_items")
+      .collection<CompletedItemRecord>("completed_items")
       .getFullList({
         filter: listItems.map((li) => `item.id = "${li.id}"`).join(" || "),
       });
 
-    console.log("GetAllItemsForUser Results", {
-      listItems,
-      itemTags,
-      itemCompletions,
-    });
+    // Map the tags to the list items
+    const uiListItems = listItems.map((li) => ({
+      ...li,
+      tags: itemTags.filter((tag) => li.tags.includes(tag.id ?? "")),
+      LastCompleted: itemCompletions.find((ci) => ci.item === li.id),
+    }));
 
-    return listItems;
+    return uiListItems;
   } catch (err) {
     console.error("Error getting list items", err);
     return [];
