@@ -20,11 +20,11 @@ type CardProps = {
   height?: string;
   left?: string;
   margin?: "small" | "medium" | "large";
-  padding?: "small" | "medium" | "large";
+  padding?: "mini" | "small" | "medium" | "large";
   position?: "relative" | "absolute";
   right?: string;
   top?: string;
-  variant?: "default" | "alternate" | "transparent";
+  variant?: "default" | "alternate" | "transparent" | "outlined";
   width?: string;
 };
 
@@ -47,12 +47,17 @@ export const Card = (props: CardProps) => {
             ? "var(--color-fullbackground)"
             : props.variant === "transparent"
             ? "var(--color-backdrop-invert)"
+            : props.variant === "outlined"
+            ? "transparent"
             : "var(--color-background)",
-        "--card-border": props.border
-          ? `1px solid var(--color-${props.border})`
-          : "none",
+        "--card-border":
+          props.border || props.variant === "outlined"
+            ? `1px solid var(--color-${props.border ?? "text"})`
+            : "0px",
         "--card-shadow":
-          props.variant === "alternate"
+          props.variant === "outlined"
+            ? "none"
+            : props.variant === "alternate"
             ? "var(--box-shadow-medium)"
             : "var(--box-shadow-small)",
         "--card-height": props.height || "unset",

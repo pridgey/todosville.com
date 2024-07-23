@@ -11,7 +11,7 @@
   --color-tertiary: #885fba;
   --color-success: #29751e;
   --color-error: #bd1e44;
-  --color-gray: #cfc1c0;
+  --color-gray: #858080;
   --color-fullwhite: #ffffff;
   --color-fullblack: #252525;
   --color-white: #f8f5f3;
@@ -34,6 +34,7 @@
   --box-shadow-small: 0px 3px 3px 0px var(--shadow-color);
   --box-shadow-medium: 0px 3px 8px 0px var(--shadow-color);
   /* Spacing (handled by rem) */
+  --spacing-mini: 0.75rem;
   --spacing-small: 1rem;
   --spacing-medium: 2rem;
   --spacing-large: 4rem;
@@ -45,8 +46,8 @@
   --font-size-mini: 1.5rem; /* 8px */
   --font-size-small: 1.85rem; /* 12px */
   --font-size-text: 2rem; /* 16px */
-  --font-size-header: 3rem; /* 24px */
-  --font-size-large: 4rem; /* 32px */
+  --font-size-header: 2.5rem; /* 24px */
+  --font-size-large: 3rem; /* 32px */
   --font-size-extra-large: 5rem; /* 40px */
   /* Font Weights */
   --font-weight-light: 300;

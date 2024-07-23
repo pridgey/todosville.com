@@ -13,12 +13,11 @@
 }
 
 .input_control {
-  background-color: var(--color-fullbackground);
+  background-color: var(--input-background);
   border-radius: var(--border-radius);
-  border: 1px solid var(--color-gray);
+  border: var(--input-border);
   color: var(--color-text);
   font-family: var(--font-family);
-  font-size: var(--font-size-text);
   padding: var(--spacing-small);
   width: var(--input-width);
 }

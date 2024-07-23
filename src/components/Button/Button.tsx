@@ -28,7 +28,7 @@ export type ButtonProps = {
   Href?: string;
   IconSize?: string;
   OnClick?: () => void;
-  Padding?: "small" | "medium" | "large" | "none";
+  Padding?: "mini" | "small" | "medium" | "large" | "none";
   Pending?: boolean;
   Type?: "button" | "submit";
   Variant?: "full" | "outlined" | "text";

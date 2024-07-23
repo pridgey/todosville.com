@@ -82,6 +82,7 @@ export default function Home() {
                   <Input
                     Label="Item Name"
                     OnChange={(newValue) => setListItemName(newValue)}
+                    Variant="inline"
                   />
                   <Button
                     OnClick={async () => {
