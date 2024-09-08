@@ -1,17 +1,16 @@
 import { createAsync, useAction, type RouteDefinition } from "@solidjs/router";
-import { For, createResource, createSignal } from "solid-js";
+import { createResource, createSignal, Show } from "solid-js";
 import { Button } from "~/components/Button";
 import { Card } from "~/components/Card";
 import { Divider } from "~/components/Divider";
 import { Flex } from "~/components/Flex";
-import { Grid } from "~/components/Grid";
 import { Input } from "~/components/Input";
 import { Text } from "~/components/Text";
-import { ListItemCard } from "~/compositions/ListItemCard";
+import { AddItemModal } from "~/compositions/AddItemModal";
+import { ToDoList } from "~/compositions/ToDoList";
 import { getUser, logout } from "~/lib";
 import { createListItem, getAllItemsForUser } from "~/lib/db";
 import homeStyles from "~/styles/home.module.css";
-import { Mason } from "solid-mason";
 
 export const route = {
   load: () => getUser(),
@@ -29,11 +28,9 @@ export default function Home() {
   // const createNewList = useAction(createList);
   // // delete existing list
   // const deleteExistingList = useAction(deleteList);
-  // create new list item
-  const createNewListItem = useAction(createListItem);
 
-  // State for a new list item
-  const [listItemName, setListItemName] = createSignal("");
+  // Show the add item modal
+  const [addItemModalOpen, setAddItemModalOpen] = createSignal(false);
 
   return (
     <main class={homeStyles.background}>
@@ -63,7 +60,7 @@ export default function Home() {
           {/* Main Content - List Items */}
           <Card
             height="100%"
-            padding="large"
+            padding="medium"
             variant="transparent"
             width="100%"
           >
@@ -72,44 +69,30 @@ export default function Home() {
                 <Text FontSize="header" FontWeight="semibold">
                   Your List
                 </Text>
-                <Flex
-                  AlignItems="flex-end"
-                  Direction="row"
-                  Gap="medium"
-                  JustifyContent="space-between"
-                  Width="100%"
-                >
-                  <Input
-                    Label="Item Name"
-                    OnChange={(newValue) => setListItemName(newValue)}
-                    Variant="inline"
-                  />
-                  <Button
-                    OnClick={async () => {
-                      await createNewListItem({
-                        item_name: listItemName(),
-                        description: "",
-                        cooldown_seconds: 0,
-                        shared_users: [],
-                        tags: [],
-                        user: user()?.id,
-                      });
-                      setListItemName("");
-                      refetchListItems();
-                    }}
-                  >
-                    Add Item
-                  </Button>
-                </Flex>
                 <Divider />
-                <Mason as="div" items={listItems()} columns={4}>
-                  {(item) => <ListItemCard {...item} />}
-                </Mason>
+                <ToDoList ListItems={listItems() || []} />
+                <Button
+                  OnClick={() => setAddItemModalOpen(true)}
+                  Padding="medium"
+                  Sticky={true}
+                  StickyOffsets={{ Edge: "bottom", Offset: "10px" }}
+                >
+                  Add New Item
+                </Button>
               </Flex>
             </Card>
           </Card>
         </Flex>
       </Flex>
+      <Show when={addItemModalOpen()}>
+        <AddItemModal
+          OnClose={() => setAddItemModalOpen(false)}
+          OnCreated={() => {
+            refetchListItems();
+            setAddItemModalOpen(false);
+          }}
+        />
+      </Show>
     </main>
   );
 }

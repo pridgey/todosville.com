@@ -9,3 +9,12 @@ export type ListItemRecord = {
   shared_users: string[];
   tags: string[];
 };
+
+export const emptyListItem: ListItemRecord = {
+  item_name: "",
+  user: "",
+  description: "",
+  cooldown_seconds: 0,
+  shared_users: [],
+  tags: [],
+};

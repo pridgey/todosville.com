@@ -56,6 +56,10 @@ export const createListItem = action(async (item: ListItemRecord) => {
   "use server";
   try {
     const client = await getPocketBase();
+    const user = await getUser();
+
+    // Set the user id
+    item.user = user.id ?? "";
 
     await client.collection<ListItemRecord>("list_items").create(item);
 

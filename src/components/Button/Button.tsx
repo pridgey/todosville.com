@@ -30,6 +30,11 @@ export type ButtonProps = {
   OnClick?: () => void;
   Padding?: "mini" | "small" | "medium" | "large" | "none";
   Pending?: boolean;
+  Sticky?: boolean;
+  StickyOffsets?: {
+    Edge: "top" | "bottom";
+    Offset: string;
+  };
   Type?: "button" | "submit";
   Variant?: "full" | "outlined" | "text";
   Width?: string;
@@ -63,7 +68,7 @@ const ButtonChildren = (props: {
 };
 
 export const Button = (props: ButtonProps) => {
-  const styles = {
+  const styles: JSX.CSSProperties = {
     "--button-color": `var(--color-${props.Color ?? "primary"})`,
     "--button-padding":
       props.Padding === "none"
@@ -73,6 +78,15 @@ export const Button = (props: ButtonProps) => {
     "--button-font-size": `var(--font-size-${props.FontSize ?? "text"})`,
     "--button-icon-size": props.IconSize ?? "unset",
     "--button-width": props.Width ?? "unset",
+    position: props.Sticky ? "sticky" : "unset",
+    bottom:
+      props.StickyOffsets?.Edge === "bottom"
+        ? props.StickyOffsets.Offset
+        : "unset",
+    top:
+      props.StickyOffsets?.Edge === "top"
+        ? props.StickyOffsets.Offset
+        : "unset",
   };
 
   if (!!props.Href) {
