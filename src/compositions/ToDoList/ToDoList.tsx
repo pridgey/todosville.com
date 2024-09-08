@@ -6,6 +6,7 @@ import { ListItemUIRecord } from "~/types/ListItemUIRecord";
 
 type ToDoListProps = {
   ListItems: ListItemUIRecord[];
+  OnClick: (ListItem: ListItemUIRecord) => void;
 };
 
 /**
@@ -33,13 +34,17 @@ const ToDoListComponent = (props: ToDoListProps) => {
         <Match when={screenWidth() < 768}>
           <Flex Direction="column" Gap="medium">
             <For each={props.ListItems}>
-              {(item) => <ListItemCard {...item} />}
+              {(item) => (
+                <ListItemCard OnClick={() => props.OnClick(item)} {...item} />
+              )}
             </For>
           </Flex>
         </Match>
         <Match when={screenWidth() >= 768}>
           <Mason as="div" items={props.ListItems} columns={4}>
-            {(item) => <ListItemCard {...item} />}
+            {(item) => (
+              <ListItemCard OnClick={() => props.OnClick(item)} {...item} />
+            )}
           </Mason>
         </Match>
       </Switch>

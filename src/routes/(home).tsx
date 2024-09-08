@@ -1,16 +1,16 @@
-import { createAsync, useAction, type RouteDefinition } from "@solidjs/router";
+import { createAsync, type RouteDefinition } from "@solidjs/router";
 import { createResource, createSignal, Show } from "solid-js";
 import { Button } from "~/components/Button";
 import { Card } from "~/components/Card";
 import { Divider } from "~/components/Divider";
 import { Flex } from "~/components/Flex";
-import { Input } from "~/components/Input";
 import { Text } from "~/components/Text";
-import { AddItemModal } from "~/compositions/AddItemModal";
+import { ListItemModal } from "~/compositions/ListItemModal";
 import { ToDoList } from "~/compositions/ToDoList";
 import { getUser, logout } from "~/lib";
-import { createListItem, getAllItemsForUser } from "~/lib/db";
+import { getAllItemsForUser } from "~/lib/db";
 import homeStyles from "~/styles/home.module.css";
+import { ListItemRecord } from "~/types/ListItemRecord";
 
 export const route = {
   load: () => getUser(),
@@ -31,6 +31,8 @@ export default function Home() {
 
   // Show the add item modal
   const [addItemModalOpen, setAddItemModalOpen] = createSignal(false);
+  const [selectedListItem, setSelectedListItem] =
+    createSignal<ListItemRecord | null>();
 
   return (
     <main class={homeStyles.background}>
@@ -70,7 +72,17 @@ export default function Home() {
                   Your List
                 </Text>
                 <Divider />
-                <ToDoList ListItems={listItems() || []} />
+                <ToDoList
+                  OnClick={(selectedItem) => {
+                    setSelectedListItem({
+                      item_name: selectedItem.item_name,
+                      description: selectedItem.description,
+                      cooldown_seconds: selectedItem.cooldown_seconds,
+                    } as ListItemRecord);
+                    setAddItemModalOpen(true);
+                  }}
+                  ListItems={listItems() || []}
+                />
                 <Button
                   OnClick={() => setAddItemModalOpen(true)}
                   Padding="medium"
@@ -85,8 +97,12 @@ export default function Home() {
         </Flex>
       </Flex>
       <Show when={addItemModalOpen()}>
-        <AddItemModal
-          OnClose={() => setAddItemModalOpen(false)}
+        <ListItemModal
+          SelectedItem={selectedListItem() || undefined}
+          OnClose={() => {
+            setAddItemModalOpen(false);
+            setSelectedListItem(null);
+          }}
           OnCreated={() => {
             refetchListItems();
             setAddItemModalOpen(false);

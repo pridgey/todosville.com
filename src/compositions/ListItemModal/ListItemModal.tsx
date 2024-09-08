@@ -15,12 +15,13 @@ import {
   CooldownUnit,
 } from "~/utilities/calculateCooldownSeconds";
 
-type AddItemModalProps = {
+type ListItemModalProps = {
+  SelectedItem?: ListItemRecord;
   OnClose: () => void;
   OnCreated: () => void;
 };
 
-export const AddItemModal = (props: AddItemModalProps) => {
+export const ListItemModal = (props: ListItemModalProps) => {
   // Controls whether or not to show the repetition options
   const [taskRepeats, setTaskRepeats] = createSignal(false);
   // Repetition options
@@ -28,8 +29,9 @@ export const AddItemModal = (props: AddItemModalProps) => {
   const [repeatUnit, setRepeatUnit] = createSignal<CooldownUnit>();
 
   // The state of the list item being created/edited
-  const [listItemState, setListItemState] =
-    createSignal<ListItemRecord>(emptyListItem);
+  const [listItemState, setListItemState] = createSignal<ListItemRecord>(
+    props.SelectedItem || emptyListItem
+  );
 
   // Any form validation errors
   const [validationErrors, setValidationErrors] = createSignal<
@@ -80,10 +82,11 @@ export const AddItemModal = (props: AddItemModalProps) => {
         }
       }}
       SubmitLabel="Create My New Item"
-      Title="Add a New Item"
+      Title={`${listItemState().id ? "Edit" : "Create"} List Item`}
     >
       <Flex Direction="column" Gap="medium">
         <Input
+          DefaultValue={listItemState().item_name}
           Error={validationErrors()["item_name"]}
           Label="Item name"
           OnChange={(newTitle) =>
@@ -94,6 +97,7 @@ export const AddItemModal = (props: AddItemModalProps) => {
           }
         />
         <Input
+          DefaultValue={listItemState().description}
           Multiline={true}
           Label="Description"
           OnChange={(newDesc) => {
