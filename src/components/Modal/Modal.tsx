@@ -7,6 +7,7 @@ import { IoClose } from "solid-icons/io";
 import { Show } from "solid-js";
 
 type ModalProps = {
+  Banner?: string;
   children: JSX.Element;
   CancelLabel?: string;
   OnClose: () => void;
@@ -14,7 +15,7 @@ type ModalProps = {
   Pending?: boolean;
   SubmitColor?: "primary" | "danger";
   SubmitLabel?: string;
-  Title: string;
+  Title?: string;
   Width?: string;
 };
 
@@ -27,21 +28,35 @@ export const Modal = (props: ModalProps) => {
           open={true}
           style={{ "--modal-width": props.Width ?? "500px" }}
         >
-          <span style={{ "grid-area": "title" }}>
-            <Text As="h1" FontWeight="bold" FontSize="header">
-              {props.Title}
-            </Text>
+          <Show when={!!props.Banner?.length}>
+            <img src={props.Banner} alt="Banner" class={styles.banner} />
+          </Show>
+          <span
+            classList={{
+              [styles.title]: !props.Banner,
+              [styles.bannerTitle]: !!props.Banner,
+            }}
+            style={{ "grid-area": "title" }}
+          >
+            <Show when={!!props.Title}>
+              <Text
+                As="h1"
+                FontWeight="bold"
+                FontSize={!!props.Banner?.length ? "large" : "header"}
+              >
+                {props.Title}
+              </Text>
+            </Show>
           </span>
           <span style={{ "grid-area": "close" }}>
             <Button
-              Color="text"
+              Color={props.Banner?.length ? "primary" : "text"}
               Disabled={props.Pending}
-              DisableRadius={true}
               OnClick={() => props.OnClose()}
-              Padding="none"
+              Padding="medium"
               Pending={props.Pending}
               Type="button"
-              Variant="text"
+              Variant={props.Banner?.length ? "full" : "text"}
             >
               <IoClose />
             </Button>

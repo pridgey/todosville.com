@@ -1,5 +1,5 @@
-import { useAction } from "@solidjs/router";
-import { createEffect, Show } from "solid-js";
+import { useAction, useSubmission } from "@solidjs/router";
+import { createEffect, Match, Show, Switch } from "solid-js";
 import { createSignal } from "solid-js";
 import { Card } from "~/components/Card";
 import { Checkbox } from "~/components/Checkbox";
@@ -14,6 +14,7 @@ import {
   calculateCooldownSeconds,
   CooldownUnit,
 } from "~/utilities/calculateCooldownSeconds";
+import { ListItemForm } from "./Subcompositions/ListItemForm";
 
 type ListItemModalProps = {
   SelectedItem?: ListItemRecord;
@@ -22,12 +23,6 @@ type ListItemModalProps = {
 };
 
 export const ListItemModal = (props: ListItemModalProps) => {
-  // Controls whether or not to show the repetition options
-  const [taskRepeats, setTaskRepeats] = createSignal(false);
-  // Repetition options
-  const [repeatNumber, setRepeatNumber] = createSignal(0);
-  const [repeatUnit, setRepeatUnit] = createSignal<CooldownUnit>();
-
   // The state of the list item being created/edited
   const [listItemState, setListItemState] = createSignal<ListItemRecord>(
     props.SelectedItem || emptyListItem
@@ -40,29 +35,11 @@ export const ListItemModal = (props: ListItemModalProps) => {
 
   // Solid-Start action to create the new list item
   const createNewListItem = useAction(createListItem);
-
-  // Determine cooldown seconds based on user input (listitem needs number of seconds)
-  createEffect(() => {
-    if (taskRepeats() && repeatNumber() && repeatUnit()) {
-      const cooldownInSeconds = calculateCooldownSeconds(
-        repeatNumber(),
-        repeatUnit() ?? "days"
-      );
-
-      setListItemState((prev) => ({
-        ...prev,
-        cooldown_seconds: cooldownInSeconds,
-      }));
-    } else if (!taskRepeats() && listItemState().cooldown_seconds > 0) {
-      setListItemState((prev) => ({
-        ...prev,
-        cooldown_seconds: 0,
-      }));
-    }
-  });
+  const createListItemAction = useSubmission(createListItem);
 
   return (
     <Modal
+      Banner={listItemState().image_url}
       CancelLabel="Nevermind"
       OnClose={props.OnClose}
       OnSubmit={async () => {
@@ -81,102 +58,24 @@ export const ListItemModal = (props: ListItemModalProps) => {
           props.OnCreated();
         }
       }}
+      Pending={createListItemAction.pending}
       SubmitLabel="Create My New Item"
-      Title={`${listItemState().id ? "Edit" : "Create"} List Item`}
+      Title={listItemState().item_name || "Create New Item"}
     >
-      <Flex Direction="column" Gap="medium">
-        <Input
-          DefaultValue={listItemState().item_name}
-          Error={validationErrors()["item_name"]}
-          Label="Item name"
-          OnChange={(newTitle) =>
-            setListItemState((prev) => ({
-              ...prev,
-              item_name: newTitle,
-            }))
-          }
-        />
-        <Input
-          DefaultValue={listItemState().description}
-          Multiline={true}
-          Label="Description"
-          OnChange={(newDesc) => {
-            setListItemState((prev) => ({
-              ...prev,
-              description: newDesc,
-            }));
-          }}
-        />
-        <Checkbox
-          Checked={taskRepeats()}
-          Label="This Task Repeats"
-          OnChange={(checked) => setTaskRepeats(checked)}
-        />
-        <Show when={taskRepeats()}>
-          <Card padding="medium" variant="alternate">
-            <Flex Direction="column" Gap="medium">
-              <Text>
-                A repeated task will start a countdown once it is checked and
-                when that time has elapsed, will uncheck itself.
-              </Text>
-              <Flex
-                AlignItems="center"
-                Direction="row"
-                JustifyContent="space-between"
-                Gap="medium"
-              >
-                <Input
-                  Label="Repeat Every..."
-                  OnChange={(newRepeatNumber) =>
-                    setRepeatNumber(
-                      isNaN(Number(newRepeatNumber))
-                        ? 0
-                        : Number(newRepeatNumber)
-                    )
-                  }
-                  Type="number"
-                />
-                <Select
-                  Label="Time Unit"
-                  OnChange={(newUnit) =>
-                    setRepeatUnit(newUnit.value as unknown as CooldownUnit)
-                  }
-                  Options={[
-                    {
-                      display: "Seconds",
-                      value: "seconds",
-                    },
-                    {
-                      display: "Minutes",
-                      value: "minutes",
-                    },
-                    {
-                      display: "Hours",
-                      value: "hours",
-                    },
-                    {
-                      display: "Days",
-                      value: "days",
-                    },
-                    {
-                      display: "Weeks",
-                      value: "weeks",
-                    },
-                    {
-                      display: "Months",
-                      value: "months",
-                    },
-                    {
-                      display: "Years",
-                      value: "years",
-                    },
-                  ]}
-                />
-              </Flex>
-            </Flex>
-          </Card>
-        </Show>
-      </Flex>
+      <Switch>
+        <Match when={listItemState().id}>
+          <Flex Direction="column" Gap="medium">
+            <Text FontSize="large">{listItemState().description}</Text>
+          </Flex>
+        </Match>
+        <Match when={!listItemState().id}>
+          <ListItemForm
+            Errors={validationErrors()}
+            ListItem={listItemState()}
+            OnChange={setListItemState}
+          />
+        </Match>
+      </Switch>
     </Modal>
   );
 };

@@ -1,5 +1,5 @@
 import { createAsync, type RouteDefinition } from "@solidjs/router";
-import { createResource, createSignal, Show } from "solid-js";
+import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { Button } from "~/components/Button";
 import { Card } from "~/components/Card";
 import { Divider } from "~/components/Divider";
@@ -23,6 +23,10 @@ export default function Home() {
   // Get all list items for current user
   const [listItems, { refetch: refetchListItems }] =
     createResource(getAllItemsForUser);
+
+  createEffect(() => {
+    console.log("Debug list items", { items: listItems() });
+  });
 
   // // create new list
   // const createNewList = useAction(createList);
@@ -75,7 +79,9 @@ export default function Home() {
                 <ToDoList
                   OnClick={(selectedItem) => {
                     setSelectedListItem({
+                      id: selectedItem.id,
                       item_name: selectedItem.item_name,
+                      image_url: selectedItem.image_url || "",
                       description: selectedItem.description,
                       cooldown_seconds: selectedItem.cooldown_seconds,
                     } as ListItemRecord);

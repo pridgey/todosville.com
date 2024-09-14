@@ -1,6 +1,7 @@
 export type ListItemRecord = {
   id?: string;
   item_name: string;
+  image_url?: string;
   user: string;
   description: string;
   cooldown_seconds: number;

@@ -3,6 +3,7 @@ import { ListItemRecord } from "~/types/ListItemRecord";
 import { action } from "@solidjs/router";
 import { TagRecord } from "~/types/TagRecord";
 import { CompletedItemRecord } from "~/types/CompletedItemRecord";
+import Replicate from "replicate";
 
 /**
  * Gets all list items given a list id
@@ -57,6 +58,21 @@ export const createListItem = action(async (item: ListItemRecord) => {
   try {
     const client = await getPocketBase();
     const user = await getUser();
+
+    const replicate = new Replicate();
+
+    const replicateResponse: string[] = (await replicate.run(
+      "black-forest-labs/flux-schnell",
+      {
+        input: {
+          prompt: `A cute illustration depicting the task ${item.item_name}`,
+          disable_safety_checker: true,
+          aspect_ratio: "21:9",
+        },
+      }
+    )) as string[];
+
+    item.image_url = replicateResponse[0];
 
     // Set the user id
     item.user = user.id ?? "";

@@ -4,6 +4,7 @@ import { TagRecord } from "./TagRecord";
 export type ListItemUIRecord = {
   id?: string;
   item_name: string;
+  image_url?: string;
   user: string;
   description: string;
   cooldown_seconds: number;
