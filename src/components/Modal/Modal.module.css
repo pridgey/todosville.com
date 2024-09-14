@@ -43,7 +43,7 @@
   background: linear-gradient(
     to right,
     var(--color-backdrop) 80%,
-    var(--color-background) 100%
+    rgba(0, 0, 0, 0) 100%
   );
   display: flex;
   flex-direction: row;
