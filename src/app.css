@@ -16,8 +16,10 @@
   --color-fullblack: #252525;
   --color-white: #f8f5f3;
   --color-black: #0a080a;
-  --color-backdrop: rgba(0, 0, 0, 0.6);
-  --color-backdrop-invert: rgba(255, 255, 255, 0.6);
+  --color-transparent-white: rgba(255, 255, 255, 0.6);
+  --color-transparent-black: rgba(0, 0, 0, 0.6);
+  --color-backdrop: var(--color-transparent-black);
+  --color-backdrop-invert: var(--color-transparent-white);
   --color-text: var(--color-black);
   --color-fullbackground: var(--color-fullwhite);
   --color-fullforeground: var(--color-fullblack);
@@ -64,6 +66,8 @@
     --color-foreground: var(--color-white);
     --color-fullbackground: var(--color-fullblack);
     --color-fullforeground: var(--color-fullwhite);
+    --color-backdrop: var(--color-transparent-white);
+    --color-backdrop-invert: var(--color-transparent-black);
     --color-gray: #625a59;
     --color-text: var(--color-white);
     --color-darken: 120%;

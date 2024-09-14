@@ -42,24 +42,28 @@ export const ListItemModal = (props: ListItemModalProps) => {
       Banner={listItemState().image_url}
       CancelLabel="Nevermind"
       OnClose={props.OnClose}
-      OnSubmit={async () => {
-        if (listItemState()) {
-          // Validate the item has a name
-          if (!listItemState().item_name) {
-            // Show an error if the item has no name and return early
-            setValidationErrors((prev) => ({
-              ...prev,
-              item_name: "Please enter a name for your item",
-            }));
-            return;
-          }
-          // All must be good, create the item
-          await createNewListItem(listItemState()!);
-          props.OnCreated();
-        }
-      }}
+      OnSubmit={
+        listItemState().id
+          ? undefined
+          : async () => {
+              if (listItemState()) {
+                // Validate the item has a name
+                if (!listItemState().item_name) {
+                  // Show an error if the item has no name and return early
+                  setValidationErrors((prev) => ({
+                    ...prev,
+                    item_name: "Please enter a name for your item",
+                  }));
+                  return;
+                }
+                // All must be good, create the item
+                await createNewListItem(listItemState()!);
+                props.OnCreated();
+              }
+            }
+      }
       Pending={createListItemAction.pending}
-      SubmitLabel="Create My New Item"
+      SubmitLabel={"Create My New Item"}
       Title={listItemState().item_name || "Create New Item"}
     >
       <Switch>
