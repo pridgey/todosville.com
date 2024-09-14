@@ -70,7 +70,7 @@ export const ListItemForm = (props: ListItemFormProps) => {
         OnChange={(newDesc) => {
           props.OnChange({
             ...props.ListItem,
-            item_name: newDesc,
+            description: newDesc,
           });
         }}
       />
